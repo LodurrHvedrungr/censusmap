@@ -19,7 +19,7 @@ map.on('load', () => {
 
     map.addSource('population', {
         type: 'geojson',
-        data: 'processed.json'
+        data: 'assets/processed.json'
     })
     map.addLayer({
         'id': 'state-population',
@@ -29,16 +29,16 @@ map.on('load', () => {
             'fill-color': [
                 'interpolate',
                 ['linear'],
-                ['get', 'IBZ'],
+                ['get', 'EWZ'],
                 0, '#F2F12D',
-                10, '#EED322',
-                20, '#E6B71E',
-                30, '#DA9C20',
-                40, '#CA8323',
-                50, '#B86B25',
-                60, '#A25626',
-                70, '#8B4225',
-                80, '#723122'
+                100, '#EED322',
+                1000, '#E6B71E',
+                5000, '#DA9C20',
+                10000, '#CA8323',
+                50000, '#B86B25',
+                100000, '#A25626',
+                500000, '#8B4225',
+                1000000, '#723122'
             ],
             "fill-opacity": ["case",
                 ["boolean", ["feature-state", "hover"], false],
@@ -47,25 +47,12 @@ map.on('load', () => {
             ]
         }
     })
-    // map.addLayer({
-    //     'id': 'state-population',
-    //     'source': 'population',
-    //     'type': 'fill',
-    //     'paint': {
-    //         'fill-color': '#088',
-    //         "fill-opacity": ["case",
-    //             ["boolean", ["feature-state", "hover"], false],
-    //             1,
-    //             0.5
-    //         ]
-    //     }
-    // })
 
     map.on('click', 'state-population', function (e) {
         const d = map.queryRenderedFeatures(e.point)
         new mapboxgl.Popup()
             .setLngLat(e.lngLat)
-            .setHTML(`<div class="popup"><p>${d[0].properties.GEN}</p></div>`)
+            .setHTML(`<div class="popup"><h2>${d[0].properties.GEN}, ${d[0].properties.BEZ}</h2><p>Einwohner 2017:<br/><strong>${d[0].properties.EWZ}</strong></p></div>`)
             .addTo(map);
     })
     map.on('mousemove', 'state-population', function (e) {
