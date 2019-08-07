@@ -29,16 +29,24 @@ map.on('load', () => {
             'fill-color': [
                 'interpolate',
                 ['linear'],
-                ['get', 'EWZ'],
+                ['get', 'JVA'],
+                -10, '#000000',
+                -5, '#000000',
+                -3, '#000000',
+                -1.5, '#000000',
+                -1, '#000000',
+                -0.5, '#000000',
+                -0.3, '#000000',
+                -0.1, '#000000',
                 0, '#F2F12D',
-                100, '#EED322',
-                1000, '#E6B71E',
-                5000, '#DA9C20',
-                10000, '#CA8323',
-                50000, '#B86B25',
-                100000, '#A25626',
-                500000, '#8B4225',
-                1000000, '#723122'
+                0.1, '#EED322',
+                0.3, '#E6B71E',
+                0.5, '#DA9C20',
+                1, '#CA8323',
+                1.5, '#B86B25',
+                3, '#A25626',
+                5, '#8B4225',
+                10, '#723122'
             ],
             "fill-opacity": ["case",
                 ["boolean", ["feature-state", "hover"], false],
@@ -52,7 +60,7 @@ map.on('load', () => {
         const d = map.queryRenderedFeatures(e.point)
         new mapboxgl.Popup()
             .setLngLat(e.lngLat)
-            .setHTML(`<div class="popup"><h2>${d[0].properties.GEN}, ${d[0].properties.BEZ}</h2><p>Einwohner 2017:<br/><strong>${d[0].properties.EWZ}</strong></p></div>`)
+            .setHTML(createPopupMsg(d[0]))
             .addTo(map);
     })
     map.on('mousemove', 'state-population', function (e) {
@@ -72,3 +80,25 @@ map.on('load', () => {
         hoveredStateId = null;
     })
 })
+
+function createPopupMsg(data) {
+    let sign
+    switch (Math.sign(data.properties.JVA)) {
+        case 1:
+            sign = 'class="green">+'
+            break
+        case -1:
+            sign = 'class="red">'
+            break
+        case 0:
+            sign = 'class="white">'
+            break
+    }
+
+    return `
+    <div class="popup">
+        <h2>${data.properties.GEN}, ${data.properties.BEZ}</h2>
+        ${data.properties.EWZ ? `<p>Einwohner 2017:<br/><strong>${data.properties.EWZ}</strong></p>` : 'Keine Daten vorhanden'}
+        ${data.properties.JVA ? `<p>jährliche Veränderung seit 2011:<p ${sign}${data.properties.JVA}%</p></p>` : ''}
+    </div>`
+}
