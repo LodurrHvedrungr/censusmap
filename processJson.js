@@ -1,6 +1,6 @@
 const fs = require('fs')
 
-const file2011 = JSON.parse(fs.readFileSync('assets/gem_2011_89.json', 'utf8'))
+const file2011 = JSON.parse(fs.readFileSync('assets/vg250_gem2011.json', 'utf8'))
 const file2017 = JSON.parse(fs.readFileSync('assets/VG250_GEM.json', 'utf8'))
 
 let census2011 = {}
@@ -24,7 +24,7 @@ const census2017 = file2017.features.map((feat, i) => {
 
 function calcDifferencePercent(a, b) {
     if (!a || !b) return 0
-    const diff = ((((a - b) / a) * 100) / -1) / 6
+    const diff = (((a - b) / a) * 100) / 6
     return Number(diff.toFixed(1))
 }
 

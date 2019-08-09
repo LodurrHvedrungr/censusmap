@@ -32,5 +32,10 @@ html, body {
   font-size: 22px;
   color: white; }
 
+#color-switcher {
+  position: absolute;
+  top: 30px;
+  right: 30px; }
+
 
 /*# sourceMappingURL=bundle.css.map*/
