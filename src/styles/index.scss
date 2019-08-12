@@ -21,20 +21,66 @@ html, body {
   width: auto;
   max-width: 250px;
 }
-.red {
+.font-size {
   font-size: 22px;
+}
+.red {
+  @extend .font-size;
   color: red;
 }
 .green {
-  font-size: 22px;
+  @extend .font-size;
   color: green;
 }
 .white {
-  font-size: 22px;
+  @extend .font-size;
   color: white
 }
 #color-switcher {
   position: absolute;
   top: 30px;
   right: 30px;
+}
+.header {
+  box-shadow: 0 3px 8px rgba(0,0,0,.2);
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #fff;
+  padding: 5px 15px;
+  pointer-events: none;
+
+  &__title {
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 5px;
+  }
+  &__legend {
+    display: flex;
+    font-size: 0.9em;
+
+    .ramp {
+      width: 150px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0 .8em
+    }
+    .ramp__gradient {
+      height: .7em;
+      width: 80%
+    }
+    .ramp__ticks {
+      letter-spacing: normal;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      text-align: center;
+      line-height: 1em
+    }
+    .negative-value, .positive-value {
+      text-shadow: 0 0 3px rgba(0,0,0,.5);
+    }
+  }
 }

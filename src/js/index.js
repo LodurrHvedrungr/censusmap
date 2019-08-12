@@ -6,92 +6,74 @@ const options = {
     container: 'map',
     accessToken: 'pk.eyJ1IjoiZXVnZXlvbmUiLCJhIjoiY2p5c2kzNWd4MGtjeDNkbnUzcHNuZG5nZiJ9.QascU0AxqjJdeRehD88fSA',
     style: 'mapbox://styles/mapbox/light-v10',
-    zoom: 6,
+    zoom: 0,
+    maxZoom: 8,
     center: [10.4660513, 50.6702632],
-    maxBounds: [[5.864417, 47.26543], [15.05078, 55.14777]]
+    // maxBounds: [[5.864417, 47.26543], [15.05078, 55.14777]]
+    maxBounds: [[-0.765531, 46.631365], [20.888930, 55.352543]]
 }
 
 const colorSelect = document.getElementById('color-switcher')
 const map = new mapboxgl.Map(options)
 const popup = document.querySelector('.popup')
 const mapHtml = document.querySelector('#map')
+const rampGradient = document.querySelector('.ramp__gradient')
+const negativeValue = document.querySelector('.negative-value')
+const positiveValue = document.querySelector('.positive-value')
 let hoveredStateId = null
+let firstSymbolId
 const colorSchemes = {
     'green-red': [
-        -10, '#FF0404',
-        -5, '#DF0404',
-        -3, '#BF0303',
-        -1.5, '#9F0303',
-        -1, '#800202',
-        -0.5, '#600202',
-        -0.3, '#400101',
-        -0.1, '#200101',
+        -5, 'rgb(255, 26, 26)',
+        -3, 'rgb(230, 0, 0)',
+        -1.5, 'rgb(179, 0, 0)',
+        -1, 'rgb(128, 0, 0)',
+        -0.1, 'rgb(77, 0, 0)',
         0, '#000000',
-        0.1, '#012008',
-        0.3, '#014010',
-        0.5, '#026018',
-        1, '#028021',
-        1.5, '#039F29',
-        3, '#03BF31',
-        5, '#04DF39',
-        10, '#04FF41'
+        0.1, 'rgb(0, 77, 19)',
+        1, 'rgb(0, 128, 31)',
+        1.5, 'rgb(0, 179, 43)',
+        3, 'rgb(0, 230, 56)',
+        5, 'rgb(26, 255, 81)'
     ],
     'purple-yellow': [
-        -10, '#B9C500',
-        -5, '#A2AC00',
-        -3, '#8B9400',
-        -1.5, '#747B00',
-        -1, '#5C6300',
-        -0.5, '#454A00',
-        -0.3, '#2E3100',
-        -0.1, '#171900',
+        -5, 'rgb(241, 255, 26)',
+        -3, 'rgb(216, 230, 0)',
+        -1.5, 'rgb(168, 179, 0)',
+        -1, 'rgb(120, 128, 0)',
+        -0.1, 'rgb(72, 77, 0)',
         0, '#000000',
-        0.1, '#0B0013',
-        0.3, '#150025',
-        0.5, '#200038',
-        1, '#2A004B',
-        1.5, '#35005E',
-        3, '#3F0071',
-        5, '#4A0083',
-        10, '#540096'
+        0.1, 'rgb(43, 0, 77)',
+        1, 'rgb(71, 0, 128)',
+        1.5, 'rgb(100, 0, 179)',
+        3, 'rgb(129, 0, 230)',
+        5, 'rgb(154, 26, 255)',
     ],
     'blue-green': [
-        -10, '#6A9230',
-        -5, '#5D802A',
-        -3, '#506E24',
-        -1.5, '#425B1E',
-        -1, '#354918',
-        -0.5, '#283712',
-        -0.3, '#1B250C',
-        -0.1, '#0D1206',
-        0, '#000000',
-        0.1, '#09111A',
-        0.3, '#122334',
-        0.5, '#1B344E',
-        1, '#244668',
-        1.5, '#2C5782',
-        3, '#35689C',
-        5, '#3E7AB6',
-        10, '#478BD0'
+        -5, 'rgb(98, 134, 44)',
+        -3, 'rgb(125, 173, 57)',
+        -1.5, 'rgb(151, 198, 82)',
+        -1, 'rgb(174, 211, 121)',
+        -0.1, 'rgb(197, 223, 159)',
+        0, '#ffffff',
+        0.1, 'rgb(153, 191, 229)',
+        1, 'rgb(113, 165, 219)',
+        1.5, 'rgb(72, 140, 208)',
+        3, 'rgb(47, 114, 183)',
+        5, 'rgb(36, 89, 142)',
     ],
     'orange-lightblue': [
-        -10, '#00CCFF',
-        -5, '#00B3DF',
-        -3, '#0099BF',
-        -1.5, '#00809F',
-        -1, '#006680',
-        -0.5, '#004D60',
-        -0.3, '#003340',
-        -0.1, '#001A20',
-        0, '#000000',
-        0.1, '#1A0B04',
-        0.3, '#331509',
-        0.5, '#4D200D',
-        1, '#662B11',
-        1.5, '#803515',
-        3, '#99401A',
-        5, '#B34A1E',
-        10, '#CC5522'
+        -5, 'rgb(0, 143, 179)',
+        -3, 'rgb(0, 184, 230)',
+        -1.5, 'rgb(26, 209, 255)',
+        -1, 'rgb(77, 219, 255)',
+        -0.1, 'rgb(128, 229, 255)',
+        0, '#ffffff',
+        0.1, 'rgb(237, 173, 146)',
+        1, 'rgb(229, 140, 102)',
+        1.5, 'rgb(222, 107, 58)',
+        3, 'rgb(197, 81, 33)',
+        5, 'rgb(153, 63, 26)',
     ],
 }
 
@@ -120,11 +102,23 @@ colorSelect.addEventListener('change', function (e) {
                 0.6
             ]
         }
-    })
+    }, firstSymbolId)
+
+    rampGradient.style.background = generateLegendGradient(e.target.value)
+    negativeValue.style.color = colorSchemes[e.target.value][1]
+    positiveValue.style.color = colorSchemes[e.target.value][21]
 })
 
 map.on('load', () => {
     map.resize()
+
+    let layers = map.getStyle().layers;
+    for (let i = 0; i < layers.length; i++) {
+        if (layers[i].type === 'symbol') {
+            firstSymbolId = layers[i].id;
+            break;
+        }
+    }
 
     map.addSource('population', {
         type: 'geojson',
@@ -147,15 +141,24 @@ map.on('load', () => {
                 0.6
             ]
         }
-    })
+    }, firstSymbolId)
 
     map.on('mousemove', 'state-population', function (e) {
         const d = map.queryRenderedFeatures(e.point)
+        let mainLayer
+
         if (d.length > 0) {
+            for (const layer of d) {
+                if (layer.layer.id === 'state-population') {
+                    mainLayer = layer
+                    break
+                }
+            }
+            if (!mainLayer) return
             if (hoveredStateId) {
                 map.setFeatureState({ source: 'population', id: hoveredStateId }, { hover: false })
             }
-            hoveredStateId = d[0].id;
+            hoveredStateId = mainLayer.id;
             map.setFeatureState({ source: 'population', id: hoveredStateId }, { hover: true })
 
             const x = e.originalEvent.clientX
@@ -180,7 +183,7 @@ map.on('load', () => {
                 popup.style.left = `${x - popup.offsetWidth}px`
                 popup.style.top = `${y}px`
             }
-            popup.innerHTML = createPopupMsg(d[0])
+            popup.innerHTML = createPopupMsg(mainLayer)
             popup.style.display = 'block'
         }
     })
@@ -212,4 +215,10 @@ function createPopupMsg(data) {
         ${data.properties.EWZ ? `<p>Einwohner 2017:<br/><strong>${data.properties.EWZ}</strong></p>` : 'Keine Daten vorhanden'}
         ${data.properties.JVA ? `<p>jährliche Veränderung seit 2011:<p ${sign}${data.properties.JVA}%</p></p>` : ''}
     `
+}
+
+function generateLegendGradient(currentColor) {
+    console.log(currentColor)
+    console.log(colorSchemes[currentColor])
+    return `linear-gradient(to right, ${colorSchemes[currentColor][1]} 0%, ${colorSchemes[currentColor][5]} 33%, ${colorSchemes[currentColor][9]} 49%, ${colorSchemes[currentColor][11]} 50%, ${colorSchemes[currentColor][13]} 51%, ${colorSchemes[currentColor][17]} 67%, ${colorSchemes[currentColor][21]} 100%)`
 }
