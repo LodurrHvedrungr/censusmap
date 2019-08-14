@@ -60,6 +60,19 @@ map.on('load', () => {
             ]
         }
     }, firstSymbolId)
+    map.addLayer({
+        'id': 'state-population-border',
+        'source': 'population',
+        'type': 'line',
+        'paint': {
+            'line-width': 2,
+            'line-color': ["case",
+                ["boolean", ["feature-state", "hover"], false],
+                '#18758D',
+                'transparent'
+            ]
+        }
+    })
 
     map.on('mousemove', 'state-population', function (e) {
         const d = map.queryRenderedFeatures(e.point)
