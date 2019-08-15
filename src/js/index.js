@@ -149,7 +149,7 @@ map.on('load', () => {
             break;
         }
     }
-    fetch('data.json')
+    fetch('https://lodurrhvedrungr.github.io/censusmap/data.json')
         .then(r => r.json())
         .then(r => {
             map.addSource('population', {
