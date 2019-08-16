@@ -117,17 +117,19 @@ mapHtml.addEventListener('mouseup', function () {
 })
 clearBtn.addEventListener('click', function () {
     searchInput.value = ''
+    searchInput.setAttribute('placeholder', 'Suchen...')
+    marker.remove()
 })
 zoomIn.addEventListener('click', function () {
     const zoom = map.getZoom()
     map.zoomIn()
     if (zoom > 7) zoomIn.classList.add('disabled')
-    if (zoom < 6) zoomOut.classList.remove('disabled')
+    // if (zoom < 6) zoomOut.classList.remove('disabled')
 })
 zoomOut.addEventListener('click', function () {
     const zoom = map.getZoom()
     map.zoomOut()
-    if (zoom < 7) zoomOut.classList.add('disabled')
+    // if (zoom < 7) zoomOut.classList.add('disabled')
     if (zoom === 8) zoomIn.classList.remove('disabled')
 })
 
@@ -254,6 +256,11 @@ map.on('load', () => {
             map.setFeatureState({ source: 'population', id: hoveredStateId }, { hover: false });
         }
         hoveredStateId = null;
+    })
+    map.on('zoomend', 'state-population', function () {
+        const zoom = map.getZoom()
+        if (zoom < 8) zoomIn.classList.remove('disabled')
+        if (zoom === 8) zoomIn.classList.add('disabled')
     })
 })
 
