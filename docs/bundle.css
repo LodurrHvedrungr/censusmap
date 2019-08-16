@@ -149,6 +149,9 @@ html, body {
       align-items: center;
       width: 90%;
       font-size: 0.9em; } }
+  @media (max-width: 380px) {
+    .header {
+      font-size: 10px; } }
   .header__title {
     font-weight: bold;
     text-align: center;
@@ -191,6 +194,10 @@ html, body {
   @media (max-width: 1024px) {
     #search {
       padding: 10px 30px; } }
+  @media (max-width: 380px) {
+    #search {
+      font-size: 14px;
+      padding: 5px 30px; } }
 
 .marker {
   border-radius: 50%;
@@ -219,6 +226,9 @@ html, body {
       width: 90%;
       left: 50%;
       transform: translateX(-50%); } }
+  @media (max-width: 380px) {
+    .autocomplete {
+      bottom: 94px; } }
 
 .autocomplete-items {
   position: absolute;
@@ -279,6 +289,9 @@ html, body {
   @media (max-width: 1024px) {
     .clear {
       height: 40px; } }
+  @media (max-width: 380px) {
+    .clear {
+      height: 30px; } }
   .clear:before, .clear:after {
     content: '';
     position: absolute;

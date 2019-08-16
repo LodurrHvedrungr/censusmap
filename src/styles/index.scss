@@ -173,6 +173,9 @@ html, body {
     width: 90%;
     font-size: 0.9em;
   }
+  @media (max-width: 380px) {
+    font-size: 10px;
+  }
 
   &__title {
     font-weight: bold;
@@ -228,6 +231,10 @@ html, body {
   @media (max-width: 1024px) {
     padding: 10px 30px;
   }
+  @media (max-width: 380px) {
+    font-size: 14px;
+    padding: 5px 30px;
+  }
 }
 
 .marker {
@@ -259,6 +266,9 @@ html, body {
     width: 90%;
     left: 50%;
     transform: translateX(-50%);
+  }
+  @media (max-width: 380px) {
+    bottom: 94px;
   }
 }
 
@@ -325,6 +335,9 @@ html, body {
   
   @media (max-width: 1024px) {
     height: 40px;
+  }
+  @media (max-width: 380px) {
+    height: 30px;
   }
 
   &:before {
