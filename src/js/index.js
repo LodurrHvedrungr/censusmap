@@ -173,6 +173,7 @@ map.on('load', () => {
                         0.1, '#eb9878',
                         5, '#96210e',
                     ],
+                    'fill-opacity': 0.6,
                     "fill-outline-color": ["case",
                         ["boolean", ["feature-state", "hover"], false],
                         '#18758D',
@@ -181,7 +182,7 @@ map.on('load', () => {
                 }
             }, firstSymbolId)
             map.addLayer({
-                'id': 'state-population-border',
+                'id': 'state-population-hover',
                 'source': 'population',
                 'type': 'line',
                 'paint': {
@@ -193,6 +194,22 @@ map.on('load', () => {
                     ]
                 }
             })
+            map.addLayer({
+                'id': 'state-population-borders',
+                'source': 'population',
+                'type': 'line',
+                'paint': {
+                    'line-width': 1,
+                    'line-color': [
+                        'interpolate',
+                        ['linear'],
+                        ['get', 'JVA'],
+                        -0.1, '#70cbc5',
+                        0, '#ffffff',
+                        0.1, '#eba990',
+                    ]
+                }
+            }, 'state-population')
 
             regionsData = r.features.reduce((acc, feat) => {
                 acc[`${feat.properties.GEN}, ${feat.properties.BEZ}`] = feat.geometry
