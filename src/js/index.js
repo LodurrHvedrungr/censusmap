@@ -298,6 +298,6 @@ function createPopupMsg(data) {
     return `
         <div class="popup__arrow"></div>
         <h2 class="popup__title">${data.properties.GEN}, ${data.properties.BEZ}</h2>
-        ${data.properties.EWZ ? `<div class="popup__wrap"><p class="popup__info">Einwohner 2017:<br/><strong class="popup__info__people">${data.properties.EWZ}</strong></p><p class="popup__info">jährliche Veränderung seit 2011:<p ${data.properties.JVA ? `${sign}${data.properties.JVA}%` : 'class="black">±0%'}</p></p></div>` : '<div class="popup__wrap"><p>Keine Daten vorhanden</p></div>'}
+        ${data.properties.EWZ ? `<div class="popup__wrap"><p class="popup__info">Einwohner 2017:<br/><strong class="popup__info__people">${data.properties.EWZ.toLocaleString("de-DE-u-co-phonebk")}</strong></p><p class="popup__info">jährliche Veränderung seit 2011:<p ${data.properties.JVA ? `${sign}${data.properties.JVA}%` : 'class="black">±0%'}</p></p></div>` : '<div class="popup__wrap"><p>Keine Daten vorhanden</p></div>'}
     `
 }
